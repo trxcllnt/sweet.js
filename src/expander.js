@@ -2021,6 +2021,8 @@
             __fresh: fresh,
             _: _,
             patternModule: patternModule,
+            syntaxModule: syn,
+            expanderModule: exports,
             getPattern: function(id) {
                 return context.patternMap.get(id);
             },
