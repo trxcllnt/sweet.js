@@ -25,7 +25,6 @@
 
 
 var path        = require('path'),
-    fs          = require('fs'),
     resolveSync = require('resolve/lib/sync'),
     gen         = require('escodegen'),
     _           = require("underscore"),
@@ -34,11 +33,7 @@ var path        = require('path'),
     syn         = require("./syntax"),
     escope      = require("escope");
 
-
-
-var lib  = path.join(path.dirname(fs.realpathSync(__filename)), "../macros");
-
-var stxcaseModule = fs.readFileSync(lib + "/stxcase.js", 'utf8');
+var stxcaseCtx;
 
 var moduleCache = {};
 var cwd = process.cwd();
@@ -53,17 +48,17 @@ var requireModule = function(id, filename) {
     return moduleCache[key];
 }
 
-
 // Alow require('./example') for an example.sjs file.
-require.extensions['.sjs'] = function(module, filename) {
+require.extensions && (require.extensions['.sjs'] = function(module, filename) {
     var content = require('fs').readFileSync(filename, 'utf8');
     module._compile(gen.generate(exports.parse(content, exports.loadedMacros)), filename);
-};
-
-
+});
 
 function expandSyntax(stx, modules, options) {
     if (!stxcaseCtx) {
+        var fs  = require('fs');
+        var lib = path.join(path.dirname(fs.realpathSync(__filename)), "../macros");
+        var stxcaseModule = fs.readFileSync(lib + "/stxcase.js", 'utf8');
         stxcaseCtx = expander.expandModule(parser.read(stxcaseModule));
     }
 
