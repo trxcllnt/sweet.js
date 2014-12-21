@@ -7,6 +7,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-browserify');
 
     var moduleCache = {};
 
@@ -102,21 +103,20 @@ module.exports = function(grunt) {
                 expand: true,
                 flatten: true,
                 src: "lib/scopedEval.js",
-                dest: "browser/scripts/"
+                dest: "browser/src/"
             },
 
             browserMacros: {
                 expand: true,
-                flatten: true,
                 src: "macros/*",
-                dest: "browser/scripts/"
+                dest: "browser/src/"
             },
 
             browserSrc: {
                 expand: true,
-                flatten: true,
-                src: "src/*",
-                dest: "browser/scripts/src/"
+                cwd: "build/lib/",
+                src: "**/*.js",
+                dest: "browser/src/"
             },
 
             // for source maps support when using debug.js
@@ -143,6 +143,26 @@ module.exports = function(grunt) {
             testUnit: {
                 src: "test/test_expander_units.js",
                 dest: "build/test_expander_units.js"
+            }
+        },
+        browserify: {
+            editor: {
+                src: ["browser/src/editor.js"],
+                dest: "browser/scripts/editor.js",
+                options: { debug: true },
+                browserifyOptions: { debug: true }
+            },
+            "debugger": {
+                src: ["browser/src/debugger.js"],
+                dest: "browser/scripts/debugger.js",
+                options: { debug: true },
+                browserifyOptions: { debug: true }
+            },
+            sweeten: {
+                src: ["browser/src/sweeten.js"],
+                dest: "browser/scripts/sweeten.js",
+                options: { debug: true },
+                browserifyOptions: { debug: true }
             }
         },
         mochaTest: {
@@ -303,7 +323,7 @@ module.exports = function(grunt) {
         
     });
 
-    grunt.registerTask("dist", ["build:release", "copy:dist"]);
+    grunt.registerTask("dist", ["build:release", "copy:dist", "browserify"]);
 
     grunt.registerTask("test", ["build:tests",
                                 "copy:testFixtures",
@@ -347,7 +367,8 @@ module.exports = function(grunt) {
 
                                    "mochaTest:units",
                                    "mochaTest:test",
-                                   "mochaTest:modules"]);
+                                   "mochaTest:modules",
+                                   "browserify"]);
 
     grunt.registerTask("full", ["default", "mochaTest:es6"]);
     grunt.registerTask("docs", ["pandoc"]);

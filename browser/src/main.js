@@ -1,16 +1,14 @@
-requirejs.config({
-    shim: {
-        'underscore': {
-            exports: '_'
-        }
-    }
-});
+var _ = require("underscore");
+var sweet = require("./sweet");
+var parser = require("./parser");
+var expander = require("./expander");
+var escodegen = require("escodegen");
 
-require(["sweet","./parser", "./expander", "./escodegen"], function(sweet, parser, expander, escodegen) {
-    var read = parser.read;
-    var expand = expander.expand;
-    var flatten = expander.flatten;
+var read = parser.read;
+var expand = expander.expand;
+var flatten = expander.flatten;
 
+$(function() {
     var editor = CodeMirror.fromTextArea($('#editor')[0], {
         lineNumbers: true,
         smartIndent: false,
