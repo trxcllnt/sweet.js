@@ -919,9 +919,10 @@
                             return env[pat].level > 0;
                         });
 
-                        if(nonScalar === undefined) {
-                            throwSyntaxError('patterns', 'The pattern must have a least one non-scalar in repeat', bodyStx);
+                        if(typeof nonScalar === 'undefined') {
+                            return acc;
                         }
+
                         // assert(typeof nonScalar !== 'undefined',
                         //               "must have a least one non-scalar in repeat");
 
