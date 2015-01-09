@@ -452,6 +452,7 @@
     exports.makeRegex = makeRegex;
     exports.makeValue = makeValue;
 
+    exports.Syntax = Syntax;
     exports.Rename = Rename;
     exports.Mark = Mark;
     exports.Def = Def;

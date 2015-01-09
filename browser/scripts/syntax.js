@@ -428,6 +428,7 @@
     exports$2.makeIdent = makeIdent;
     exports$2.makeRegex = makeRegex;
     exports$2.makeValue = makeValue;
+    exports$2.Syntax = Syntax;
     exports$2.Rename = Rename;
     exports$2.Mark = Mark;
     exports$2.Def = Def;
